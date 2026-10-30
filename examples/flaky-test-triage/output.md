@@ -1,7 +1,9 @@
 # Flaky triage: checkout > applies promo code (checkout.spec.ts:48)
 
+**Category:** environment (confidence Med)
+
 **Verdict:** Fix now (test-side), plus open a product ticket for the slow promo endpoint
-**Classification:** Shared state / data collision (Med confidence); alternate: infra resource contention (Med)
+**Classification:** Infra / resource (Med confidence); alternates: Shared state / order dependence (Low), App race / product bug (Low-Med)
 
 ## Facts (observed)
 - Failure: total stays `$100.00` for 5 s after Apply.
@@ -38,7 +40,7 @@ Create the user and a fresh single-use promo through the API in a fixture. Do no
 | Product defect? | Possible | 6.4 s endpoint latency |
 | Cause understood, fix < 1 day? | Yes (fixture) | |
 | Guards critical path? | Yes | pricing |
-| Blocking others? | Yes (~1/6) | Quarantine not needed if fix lands today; else non-blocking job with owner + expiry |
+| Blocking others? | Yes (~1/6) | Fix is verified and merges today, so no quarantine; if it slips, move to the `@quarantine` job with owner + expiry |
 | Duplicate of known flake? | Unknown | |
 
 ## Actions

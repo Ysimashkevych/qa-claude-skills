@@ -23,13 +23,13 @@ Goal: decide the category, one of `product-bug`, `test-bug`, `environment` or `f
 Answer each Yes/No/Unknown in the report.
 
 1. Is the failure reproducible (>=1 in 50 runs locally or in CI loop)? If no, you cannot verify a fix; lean quarantine + instrumentation.
-2. Does the root cause point to a **product defect** (race in app, 500s, data corruption)? Yes -> file bug, keep the test enabled (it is doing its job), mark `test.fixme` only if it blocks the pipeline.
+2. Does the root cause point to a **product defect** (race in app, 500s, data corruption)? Yes -> file bug, keep the test enabled (it is doing its job); move it to the non-blocking `@quarantine` job only if it blocks the pipeline.
 3. Is the cause understood and the fix < ~1 day? Yes -> fix now.
 4. Does the test guard a high-risk/critical path (payments, auth, data loss)? Yes -> do not leave uncovered; fix now or add compensating API/lower-layer coverage before quarantining.
-5. Is it blocking merges for others (fail rate high)? Yes -> quarantine immediately, with owner and expiry.
+5. Is it blocking merges for others (fail rate high)? Yes -> quarantine immediately, with owner and expiry, unless a verified fix merges the same day.
 6. Is it a duplicate of an existing quarantined/known flake with same signature? Link it.
 
-**Quarantine rules** (if chosen): tag/annotate (`test.fixme` with issue link, or `@quarantine` tag run in a non-blocking job), assign an owner, set an expiry (e.g. 2 weeks) after which it is fixed or deleted, keep it running non-blocking so the fail rate stays visible. Never quarantine silently; never "fix" with retries or longer timeouts without a causal explanation.
+**Quarantine rules** (if chosen): tag it `@quarantine` (with an issue link) and run it in a non-blocking job; use `test.fixme` only when the test cannot run at all, since it stops producing signal. Assign an owner, set an expiry (e.g. 2 weeks) after which it is fixed or deleted, keep it running non-blocking so the fail rate stays visible. Never quarantine silently; never "fix" with retries or longer timeouts without a causal explanation.
 
 ## Rules
 

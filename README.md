@@ -1,6 +1,6 @@
 # qa-claude-skills
 
-Reusable [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills) for QA and SDET work. A skill is a folder with a `SKILL.md` (YAML frontmatter with `name` and `description`, then instructions) that Claude loads when the description matches your request.
+Reusable [Claude Code skills](https://code.claude.com/docs/en/skills) for QA and SDET work. A skill is a folder with a `SKILL.md` (YAML frontmatter with `name` and `description`, then instructions) that Claude loads when the description matches your request.
 
 By Yurii Simashkevych, Senior/Lead SDET. These skills encode the review and triage heuristics I use for Playwright/TypeScript suites and risk-based testing.
 
@@ -12,6 +12,11 @@ By Yurii Simashkevych, Senior/Lead SDET. These skills encode the review and tria
 | [`api-test-from-schema`](skills/api-test-from-schema/SKILL.md) | Generate Playwright `APIRequestContext` tests from OpenAPI/GraphQL schemas with a coverage checklist |
 
 ## Install
+
+```bash
+git clone https://github.com/Ysimashkevych/qa-claude-skills.git
+cd qa-claude-skills
+```
 
 Personal (all projects):
 ```bash
@@ -52,6 +57,17 @@ Checks that every skill directory has a `SKILL.md`, frontmatter parses, `name` m
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## Development
+
+CI checks two things on every push and pull request:
+
+```bash
+pip install -r requirements.txt && python scripts/validate.py   # frontmatter, names, referenced files
+npm ci && npm run typecheck                                      # templates and examples compile
+```
+
+The example outputs are hand-written to show the expected format; they are not captured Claude runs.
 
 ## Related projects
 

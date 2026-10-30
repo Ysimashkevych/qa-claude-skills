@@ -24,7 +24,7 @@ Review for **what will fail intermittently or hide real bugs**, not style. Be bl
 
 ## Output format
 
-```
+````
 ## Playwright review: <scope>
 Config notes: <retries/workers/parallel facts that matter>
 Summary: <N> findings (P0 a, P1 b, P2 c, P3 d). Biggest risk: <one sentence>.
@@ -36,7 +36,7 @@ Fix:
 ```ts
 <replacement code>
 ```
-```
+````
 
 Order strictly by severity, then by blast radius (a helper used by 30 tests outranks a one-off). Group identical repeats: "same pattern at lines 12, 57, 88" with one fix. End with **What is good** (max 3 bullets, only if true) and **Suggested next step** (one action, e.g. add an ESLint rule `playwright/no-wait-for-timeout`).
 

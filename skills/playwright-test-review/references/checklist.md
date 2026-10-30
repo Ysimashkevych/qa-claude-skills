@@ -2,6 +2,9 @@
 
 Format: rule | detect | fix.
 
+## False passes (P0)
+- No assertion at all, or a test whose only `expect` cannot fail (e.g. `toBeTruthy()` on a Locator).
+
 ## Flakiness (P0/P1)
 | Rule | Detect | Fix |
 |---|---|---|
@@ -31,7 +34,7 @@ Format: rule | detect | fix.
 - Assertions depend on global counts (`toHaveCount(10)` on a shared list) → filter to own data.
 
 ## Assertion strength (P2)
-- No assertion at all, or only `toBeVisible` on the page container.
+- Only `toBeVisible` on the page container.
 - Asserts action happened (toast shown) but not outcome (record persisted: verify via API or reload).
 - `toBeTruthy()` / `not.toBeNull()` on objects where a value is checkable.
 - `expect.soft` used everywhere and never reviewed; `try/catch` swallowing failures.

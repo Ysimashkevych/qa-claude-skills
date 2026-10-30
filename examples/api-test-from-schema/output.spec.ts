@@ -2,6 +2,9 @@
 // Env: API_BASE_URL (required), API_TOKEN (valid bearer token)
 import { test, expect, validator } from '../../skills/api-test-from-schema/templates/fixtures';
 
+// Cleanup: the spec defines no DELETE /tasks/{id}, so created tasks cannot be removed.
+// Unique titles (uid) keep tests independent; listed under spec gaps below.
+
 const taskSchema = {
   type: 'object',
   required: ['id', 'title', 'priority'],
@@ -52,7 +55,9 @@ test.describe('POST /tasks', () => {
 
 test.describe('GET /tasks/{id}', () => {
   test('200 returns the created task', async ({ request, uid }) => {
-    const created = await (await request.post('/tasks', { data: { title: `get-${uid}` } })).json();
+    const setup = await request.post('/tasks', { data: { title: `get-${uid}` } });
+    expect(setup.status()).toBe(201);
+    const created = await setup.json();
     const res = await request.get(`/tasks/${created.id}`);
     expect(res.status()).toBe(200);
     const body = await res.json();
@@ -78,10 +83,12 @@ test.describe('GET /tasks/{id}', () => {
 });
 
 /*
-Coverage checklist (excerpt)
-| Operation | Happy | Required | Types/bounds/enum | No auth | AuthZ | Not found | Contract |
-| POST /tasks | Y | Y | Y | Y | GAP (no roles in spec) | N/A | Y |
-| GET /tasks/{id} | Y | N/A | Y (uuid) | Y | GAP (no tenancy in spec) | Y | Y |
-Spec gaps: no 400 documented for GET /tasks/{id}; 400 error body schema undefined, so bodies are not asserted;
-no 403/409 documented; no invalid-token (expired) fixture provided.
+Coverage checklist
+| Operation | Happy | Required fields | Types/bounds/enum | Auth missing/invalid | AuthZ/tenant | Not found | Conflict/dup | Content-type/body | Contract (resp schema) | Idempotency | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| POST /tasks | Y | Y | Y | Y / GAP (no expired-token fixture) | GAP (no roles in spec) | N/A (creates, no id) | GAP (no 409 documented) | GAP (no 415 documented) | Y | N/A (POST, no idempotency key in spec) | no cleanup: no DELETE in spec |
+| GET /tasks/{id} | Y | N/A (no body) | Y (uuid) | Y / GAP (no expired-token fixture) | GAP (no tenancy in spec) | Y | N/A (read only) | N/A (no body) | Y | Y (GET is safe) | malformed id asserted loosely |
+
+Spec gaps: no DELETE, so test data cannot be cleaned up; no 400 documented for GET /tasks/{id}; 400 error body schema
+undefined, so error bodies are not asserted; no 403/409/415 documented; no invalid-token (expired) fixture provided.
 */
