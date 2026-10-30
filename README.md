@@ -52,3 +52,10 @@ Checks that every skill directory has a `SKILL.md`, frontmatter parses, `name` m
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## Related projects
+
+- [ai-test-triage](https://github.com/Ysimashkevych/ai-test-triage): automated, report-level version of `flaky-test-triage`, with the same categories.
+- [playwright-ts-framework](https://github.com/Ysimashkevych/playwright-ts-framework): a Playwright framework that follows the `playwright-test-review` checklist.
+- [graphql-api-tests-go](https://github.com/Ysimashkevych/graphql-api-tests-go): GraphQL API testing in Go.
+

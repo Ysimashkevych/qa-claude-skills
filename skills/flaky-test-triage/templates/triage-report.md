@@ -1,5 +1,7 @@
 # Flaky triage: <test title> (<file>:<line>)
 
+**Category:** <product-bug | test-bug | environment | flaky-test> (confidence High/Med/Low)
+
 **Verdict:** <Fix now | Quarantine + fix by YYYY-MM-DD | Product bug: keep enabled | Need more evidence>
 **Classification:** <class> (confidence High/Med/Low)
 

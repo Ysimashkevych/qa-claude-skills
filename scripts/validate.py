@@ -22,7 +22,8 @@ for d in dirs:
         errors.append(f"{d.name}: name '{fm.get('name')}' != dir")
     if len(fm.get("description", "")) < 80:
         errors.append(f"{d.name}: description missing/too short")
-    print(f"ok  {d.name} (description {len(fm.get('description',''))} chars)") if not any(e.startswith(d.name) for e in errors) else None
+    if not any(e.startswith(f"{d.name}:") for e in errors):
+        print(f"ok  {d.name} (description {len(fm.get('description', ''))} chars)")
 for e in errors:
     print("ERR", e)
 sys.exit(1 if errors else 0)

@@ -5,7 +5,7 @@ description: Triage a failing or intermittently failing automated test (Playwrig
 
 # Flaky Test Triage
 
-Goal: decide **product bug, test bug, or environment** and what to do today. Do not guess from the error string alone; classify with evidence and say what would falsify the hypothesis.
+Goal: decide the category, one of `product-bug`, `test-bug`, `environment` or `flaky-test` (the same labels as [ai-test-triage](https://github.com/Ysimashkevych/ai-test-triage)), and what to do today. Do not guess from the error string alone; classify with evidence and say what would falsify the hypothesis.
 
 ## Procedure
 
@@ -13,7 +13,7 @@ Goal: decide **product bug, test bug, or environment** and what to do today. Do 
 2. **Characterise the failure** (fill in what is known):
    - Frequency/pattern (always, N of M runs, only after commit X, only on shard/browser/OS, only in parallel, only first run of the day).
    - Failure point (setup, action, assertion, teardown) and the exact assertion/timeout.
-3. **Classify** using `references/failure-taxonomy.md`. Pick a primary cause and at most two alternates; give a confidence (High/Med/Low) and the specific evidence for each (log line, trace step, timestamp gap).
+3. **Classify** using `references/failure-taxonomy.md`, which maps each failure class to a category. Pick a primary cause and at most two alternates; give a confidence (High/Med/Low) and the specific evidence for each (log line, trace step, timestamp gap).
 4. **Repro plan.** Smallest command that raises failure probability, e.g. `npx playwright test path -g "title" --repeat-each=50 --workers=4`, `--retries=0`, `--trace=on`, CPU throttling / `taskset`, run with the suite's neighbours, set `TZ`/locale, network throttling. Include a control run to confirm the signal (expected failure rate before/after fix). State which variable each step isolates.
 5. **Recommend** fix or quarantine via the checklist below. Always produce a concrete fix sketch (code) when the cause is test-side.
 6. **Output** using `templates/triage-report.md`.
